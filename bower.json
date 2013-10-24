@@ -1,0 +1,19 @@
+{
+  "name": "jquery.groupSlideshow",
+  "version": "0.0.0",
+  "authors": [
+    "Stefan Grönke <stefan@gronke.net>",
+    "Damaris Padieu <damizx@hotmail.fr>"
+  ],
+  "description": "Grouped slideshow with CSS3 animation",
+  "main": "jquery.groupSlideshow.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
