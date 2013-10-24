@@ -2,7 +2,7 @@
   "name": "jquery.groupSlideshow",
   "version": "0.0.0",
   "description": "Grouped slideshow with CSS3 animation",
-  "main": "jquery.groupSlideshow.js",
+  "main": "js/jquery.groupSlideshow.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,9 @@
     "Stefan Grönke <stefan@gronke.net>",
     "Damaris Padieu <damizx@hotmail.fr>"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-compass": "~0.6.0"
+  }
 }

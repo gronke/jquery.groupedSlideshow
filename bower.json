@@ -6,7 +6,7 @@
     "Damaris Padieu <damizx@hotmail.fr>"
   ],
   "description": "Grouped slideshow with CSS3 animation",
-  "main": "jquery.groupSlideshow.js",
+  "main": "js/jquery.groupSlideshow.js",
   "license": "MIT",
   "private": true,
   "ignore": [
