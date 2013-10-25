@@ -10,24 +10,28 @@
   width: 100%;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
+  z-index: 10;
 }
 
-/* line 14, ../sass/jquery.groupSlideshow.scss */
+/* line 15, ../sass/jquery.groupSlideshow.scss */
 .jq-gs-group-active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+  z-index: 20;
 }
 
-/* line 18, ../sass/jquery.groupSlideshow.scss */
+/* line 20, ../sass/jquery.groupSlideshow.scss */
 .jq-gs-container {
   position: absolute;
   width: 100%;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
+  z-index: 10;
 }
 
-/* line 23, ../sass/jquery.groupSlideshow.scss */
+/* line 26, ../sass/jquery.groupSlideshow.scss */
 .jq-gs-container-active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+  z-index: 25;
 }
