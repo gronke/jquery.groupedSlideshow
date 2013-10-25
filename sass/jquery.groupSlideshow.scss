@@ -1,3 +1,26 @@
-body {
-	background: red;
+@import "compass/css3/opacity";
+@import "compass/css3/transition";
+
+.jq-gs {
+	position: relative;
+	overflow: hidden;
+}
+
+.jq-gs-group {
+	position: absolute;
+	width: 100%;
+	@include opacity(0);
+}
+.jq-gs-group-active {
+	@include opacity(1);
+}
+
+.jq-gs-container {
+	position: absolute;
+	width: 100%;
+	@include transition(all, 0.5s);
+	@include opacity(0);
+}
+.jq-gs-container-active {
+	@include opacity(1);
 }

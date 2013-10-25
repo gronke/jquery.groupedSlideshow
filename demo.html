@@ -1,0 +1,49 @@
+<html>
+<head>
+	<title>jquery.groupSlideshow Demo and Examples</title>
+	<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/jquery.groupSlideshow.js"></script>
+	<link rel="stylesheet" type="text/css" href="stylesheets/jquery.groupSlideshow.css">
+</head>
+<body>
+
+	<div id="slideshow" style="width:1280px; height:720px; border: 1px solid #CCC;"></div>
+	<div id="slideshowControls"></div>
+
+	<script type="text/javascript">
+
+		$('#slideshow').groupSlideshow({
+			data: {
+				'cats': [
+					'images/cats/60b3e259-275a-4b63-987b-e7fe86fb731d-original.jpg',
+					'images/cats/flickr-385650640-original.jpg',
+					'images/cats/flickr-806337017-original.jpg'
+				],
+				'dogs': [
+					'images/dogs/flickr-167928164-original.jpg',
+					'images/dogs/flickr-2096534368-original.jpg'
+				]
+			},
+			delay: 2000,
+			duration: 500
+		});
+
+		// attach controls to slideshow
+		$('#slideshow').groupSlideshow('getGroups', function(groups) {
+			
+			$.each(groups, function(index, group) {
+				var $groupToggle = $(document.createElement('input'))
+					.attr('type', 'button')
+					.val(group)
+					.click(function() {
+						$('#slideshow').groupSlideshow('switchGroup', group);
+					});
+				$('#slideshowControls').append($groupToggle);
+			});
+
+		});
+
+	</script>
+
+</body>
+</html>

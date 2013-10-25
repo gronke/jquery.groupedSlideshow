@@ -1,4 +1,37 @@
-/* line 1, ../sass/jquery.groupSlideshow.scss */
-body {
-  background: red;
+/* line 4, ../sass/jquery.groupSlideshow.scss */
+.jq-gs {
+  position: relative;
+  overflow: hidden;
+}
+
+/* line 9, ../sass/jquery.groupSlideshow.scss */
+.jq-gs-group {
+  position: absolute;
+  width: 100%;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}
+
+/* line 14, ../sass/jquery.groupSlideshow.scss */
+.jq-gs-group-active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* line 18, ../sass/jquery.groupSlideshow.scss */
+.jq-gs-container {
+  position: absolute;
+  width: 100%;
+  -webkit-transition: all, 0.5s;
+  -moz-transition: all, 0.5s;
+  -o-transition: all, 0.5s;
+  transition: all, 0.5s;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}
+
+/* line 24, ../sass/jquery.groupSlideshow.scss */
+.jq-gs-container-active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
