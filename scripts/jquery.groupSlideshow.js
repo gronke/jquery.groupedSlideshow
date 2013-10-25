@@ -15,7 +15,7 @@
             },
             delay: 5000,
             duration: 500,
-            cssTransitionsEnabled: true
+            cssTransitions: true
         };
 
     // The actual plugin constructor
@@ -24,6 +24,7 @@
         this.$el = $(element);
 
         this.options = $.extend( {}, defaults, options) ;
+        this.preventAnimation = true;
 
         this._defaults = defaults;
         this._name = pluginName;
@@ -50,7 +51,10 @@
             // prepare for CSS3 Transitions
             this.$style = $(document.createElement('style')).attr('type', 'text/css');
             this.$el.append(this.$style);
-            this.setTransitions();
+            this.updateStylesheet();
+
+            // re-arm JS Animation fallback
+            this.preventAnimation = false;
 
             // Animarion Loop
             this.resetInterval();
@@ -79,6 +83,9 @@
             
             if($group.children().length === 1) {
                 this.setActiveContainer($group, $container);
+                $container.css({
+                    opacity: 1
+                });
             }
         },
 
@@ -113,9 +120,25 @@
             this.resetInterval();
         },
 
-        setActiveContainer: function($group, $container) {
-            this.getActiveContainer($group).removeClass(this.options.classNames.container + '-active');
-            $container.addClass(this.options.classNames.container + '-active');
+        setActiveContainer: function($group, $newContainer) {
+            
+            var $oldContainer = this.getActiveContainer($group).removeClass(this.options.classNames.container + '-active');
+            $newContainer.addClass(this.options.classNames.container + '-active');
+
+            if(this.preventAnimation)
+                return;
+
+            // JS Fallback if CSS Transitions are not enabled
+            if(!this.options.cssTransitions) {
+
+                $newContainer.animate({
+                    opacity: 1
+                });
+                $oldContainer.animate({
+                    opacity: 0
+                });
+            }
+
             this.resetInterval();
         },
 
@@ -148,13 +171,14 @@
 
         },
 
-        setTransitions: function() {
+        updateStylesheet: function() {
 
             var css = '';
 
-            if(this.options.cssTransitionsEnabled) {
+            if(this.options.cssTransitions) {
                 var transition = 'opacity ' + (this.options.duration/1000) + 's';
-                css = '.' + this.options.classNames.container + ' { -webkit-transition: '+transition+'; -moz-transition: '+transition+'; -o-transition: '+transition+'; transition: '+transition+'; }';
+                css = '.' + this.options.classNames.container + ' { -webkit-transition: '+transition+'; -moz-transition: '+transition+'; -o-transition: '+transition+'; transition: '+transition+'; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0); opacity: 0; }\n';
+                css += '.' + this.options.classNames.container + '-active { filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }';
             }
 
             this.$style.html(css);

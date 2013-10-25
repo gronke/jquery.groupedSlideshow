@@ -31,7 +31,5 @@
 
 /* line 26, ../sass/jquery.groupSlideshow.scss */
 .jq-gs-container-active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
   z-index: 25;
 }

@@ -25,7 +25,8 @@
 				]
 			},
 			delay: 2000,
-			duration: 500
+			duration: 500,
+			cssTransitions: (typeof Modernizr !== 'undefined') ? Modernizr.csstransitions : true // check CSS Transition support with Modernizr if available
 		});
 
 		// attach controls to slideshow
