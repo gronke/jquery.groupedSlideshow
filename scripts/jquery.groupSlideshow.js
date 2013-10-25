@@ -8,7 +8,11 @@
     // Create the defaults once
     var pluginName = "groupSlideshow",
         defaults = {
-            data: null
+            data: null,
+            classNames: {
+                group: 'jq-gs-group',
+                container: 'jq-gs-container'
+            }
         };
 
     // The actual plugin constructor
@@ -46,7 +50,7 @@
         },
 
         addGroup: function(name) {
-            var $group = $(document.createElement("div")).addClass("jq-gs-group").attr("group", name);
+            var $group = $(document.createElement("div")).addClass(this.options.classNames.group).attr("group", name);
             this.$el.append($group);
 
             if(this.$el.children().length === 1) {
@@ -62,7 +66,7 @@
         },
 
         addContainer: function($group, $container) {
-            $container.addClass("jq-gs-container");
+            $container.addClass(this.options.classNames.container);
             $group.append($container);
             
             if($group.children().length === 1) {
@@ -72,7 +76,7 @@
 
         getGroups: function() {
 
-            return this.$el.children('.jq-gs-group');
+            return this.$el.children('.' + this.options.classNames.group);
 
         },
 
@@ -87,23 +91,24 @@
         },
 
         getActiveGroup: function() {
-            return this.$el.find(".jq-gs-group-active");
+            return this.$el.find('.' + this.options.classNames.group + '-active');
         },
 
         getActiveContainer: function($group) {
             $group = $group || this.getActiveGroup();
-            return $group.find(".jq-gs-container-active");
+            return $group.find('.' + this.options.classNames.container + '-active');
         },
 
         setActiveGroup: function($group) {
-            console.log('set active group', $group);
-            this.getActiveGroup().removeClass('jq-gs-group-active');
-            $group.addClass('jq-gs-group-active');
+            this.getActiveGroup().removeClass(this.options.classNames.group + '-active');
+            $group.addClass(this.options.classNames.group + '-active');
+            this.resetInterval();
         },
 
         setActiveContainer: function($group, $container) {
-            this.getActiveContainer($group).removeClass('jq-gs-container-active');
-            $container.addClass('jq-gs-container-active');
+            this.getActiveContainer($group).removeClass(this.options.classNames.container + '-active');
+            $container.addClass(this.options.classNames.container + '-active');
+            this.resetInterval();
         },
 
         next: function() {
@@ -128,12 +133,13 @@
             var self = this;
 
             this.clearInterval();
-            
-            setInterval(function() {
+
+            this.interval = setInterval(function() {
                 self.next();
             }, this.options.delay);
 
         }
+
     };
 
     $.fn[pluginName] = function ( options ) {
