@@ -12,7 +12,10 @@
             classNames: {
                 group: 'jq-gs-group',
                 container: 'jq-gs-container'
-            }
+            },
+            delay: 5000,
+            duration: 500,
+            cssTransitionsEnabled: true
         };
 
     // The actual plugin constructor
@@ -43,6 +46,11 @@
                     self.addImage($group, src);
                 });
             });
+
+            // prepare for CSS3 Transitions
+            this.$style = $(document.createElement('style')).attr('type', 'text/css');
+            this.$el.append(this.$style);
+            this.setTransitions();
 
             // Animarion Loop
             this.resetInterval();
@@ -137,6 +145,19 @@
             this.interval = setInterval(function() {
                 self.next();
             }, this.options.delay);
+
+        },
+
+        setTransitions: function() {
+
+            var css = '';
+
+            if(this.options.cssTransitionsEnabled) {
+                var transition = 'opacity ' + (this.options.duration/1000) + 's';
+                css = '.' + this.options.classNames.container + ' { -webkit-transition: '+transition+'; -moz-transition: '+transition+'; -o-transition: '+transition+'; transition: '+transition+'; }';
+            }
+
+            this.$style.html(css);
 
         }
 

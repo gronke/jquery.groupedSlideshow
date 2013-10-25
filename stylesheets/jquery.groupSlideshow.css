@@ -22,15 +22,11 @@
 .jq-gs-container {
   position: absolute;
   width: 100%;
-  -webkit-transition: all, 0.5s;
-  -moz-transition: all, 0.5s;
-  -o-transition: all, 0.5s;
-  transition: all, 0.5s;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
 
-/* line 24, ../sass/jquery.groupSlideshow.scss */
+/* line 23, ../sass/jquery.groupSlideshow.scss */
 .jq-gs-container-active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
