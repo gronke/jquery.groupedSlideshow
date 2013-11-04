@@ -17,6 +17,9 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.0.3"
+    "jquery": "1.9.1",
+    "jquery-migrate": "~1.2.1",
+    "background-size-polyfill": "~0.2.0",
+    "modernizr": "~2.6.2"
   }
 }

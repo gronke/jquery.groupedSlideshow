@@ -15,7 +15,8 @@
             },
             delay: 5000,
             duration: 500,
-            cssTransitions: true
+            cssTransitions: true,
+            centered: true
         };
 
     // The actual plugin constructor
@@ -44,7 +45,11 @@
 
                 var $group = self.addGroup(groupName);
                 $.each(images, function(index, src) {
-                    self.addImage($group, src);
+                    if(self.options.centered) {
+                        self.addCenteredImage($group, src);
+                    } else {
+                        self.addImage($group, src);
+                    }
                 });
             });
 
@@ -64,7 +69,7 @@
         addGroup: function(name) {
             var $group = $(document.createElement("div")).addClass(this.options.classNames.group).attr("group", name);
             this.$el.append($group);
-
+            
             if(this.$el.children().length === 1) {
                 this.setActiveGroup($group);
             }
@@ -75,6 +80,16 @@
         addImage: function($group, src) {
             var $img = $(document.createElement("img")).attr("src", src);
             return this.addContainer($group, $img);
+        },
+
+        addCenteredImage: function($group, src) {
+
+            var $img = $(document.createElement("div"))
+                .addClass('jq-gs-centered-image')
+                .css("background-image", 'url(' + src + ')');
+
+            return this.addContainer($group, $img);
+
         },
 
         addContainer: function($group, $container) {
@@ -154,6 +169,14 @@
 
         },
 
+        stop: function() {
+            return this.clearInterval();
+        },
+
+        start: function() {
+            return this.resetInterval();
+        },
+
         clearInterval: function() {
             if(this.interval)
                 clearInterval(this.interval);
@@ -218,6 +241,14 @@
                         var $group = plugin.getGroups().filter('.jq-gs-group[group="'+args[1]+'"]');
                         plugin.setActiveGroup($group);
 
+                        break;
+
+                    case 'stop':
+                        plugin.stop();
+                        break;
+
+                    case 'start':
+                        plugin.start();
                         break;
 
                 }
