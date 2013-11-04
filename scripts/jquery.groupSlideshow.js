@@ -152,6 +152,16 @@
                 $oldContainer.animate({
                     opacity: 0
                 });
+                
+            } else {
+                
+                $newContainer.css({
+                    opacity: 1
+                });
+                $oldContainer.css({
+                    opacity: 0
+                });
+
             }
 
             this.resetInterval();
