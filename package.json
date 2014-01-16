@@ -1,6 +1,6 @@
 {
   "name": "jquery.groupSlideshow",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Grouped slideshow with CSS3 animation",
   "main": "js/jquery.groupSlideshow.js",
   "scripts": {
