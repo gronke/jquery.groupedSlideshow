@@ -27,6 +27,7 @@
 
 		this.options = $.extend( {}, defaults, options) ;
 		this.preventAnimation = true;
+		this.initialized = false;
 
 		this._defaults = defaults;
 		this._name = pluginName;
@@ -64,6 +65,8 @@
 
 			// Animarion Loop
 			this.resetInterval();
+
+			this.initialized = true;
 
 		},
 
@@ -104,11 +107,16 @@
 			$img.append($cache);
 
 			$cache.bind('load', function() {
-				if($cache.attr('src') === $cache.attr('jq-gs-src')) {
+				if($cache.attr('src') === src) {
 					$img.css('background-image', 'url(' + src + ')');
 					$img.trigger('load');
 					$cache.trigger('loaded');
 				}
+			});
+
+			$cache.bind('loaded', function() {
+				$img.attr('loaded', true);
+				$img.trigger('loaded');
 			});
 
 			// bind events
@@ -117,16 +125,24 @@
 					$img.trigger('load');
 					$cache.trigger('loaded');
 				} else {
-					$cache.attr('src', src);
+					setTimeout(function() {
+						$cache.attr('src', src);
+					},0);
 				}
-				$img.attr('loaded', true);
 			});
 
 			$img.bind('purge', function() {
+
+				// do not purge active image
+				if($img.hasClass(self.options.classNames.container + '-active')) {
+					return;
+				}
+
 				// replace with 1x1px spacer
 				$cache.attr('src', self.options.spacerImage);
 				$img.css('background-image', 'url(' + self.options.spacerImage + ')');
 				$img.attr('loaded', false);
+
 			});
 
 			return this.addContainer($group, $img);
@@ -143,7 +159,7 @@
 				});
 
 				// activate first container only if this is the first added group
-				if(this.$el.find('.' + this.options.classNames.group).length === 1) {
+				if(this.getGroups().length === 1) {
 					this.setActiveContainer($group, $container);
 				}
 			}
@@ -199,26 +215,30 @@
 			var onLoadContainer = function() { // when grouo switch was successfull
 
 				$oldGroup.removeClass(self.options.classNames.group + '-active');
-				self.getContainer($oldGroup).removeClass(self.options.classNames.container).trigger('purge')
+				self.getContainer($oldGroup).removeClass(self.options.classNames.container).trigger('purge');
 				
 				$group.addClass(self.options.classNames.group + '-active');
 
-				self.getContainer($oldGroup).trigger('purge');
 				$newActiveContainer.addClass(self.options.classNames.container + '-active');
 
 				self.resetInterval();
 
 			};
 
-			$newActiveContainer.bind('loaded', onLoadContainer);
+			$newActiveContainer.find('img').bind('load', function() {
+				var $this = $(this);
+				if($this.attr('src')===$this.attr('jq-gs-src')) {
+					onLoadContainer();
+				}
+			});
 
 			// start caching
 			this.setActiveContainer($group, $newActiveContainer);
+
 			if($newActiveContainer.attr('loaded')==='true') {
 				// image is already loaded, bypass the loaded event
 				onLoadContainer();
 			}
-
 		},
 
 		setActiveContainer: function($group, $newContainer) {
@@ -328,14 +348,6 @@
 			}
 
 			this.$style.html(css);
-
-		},
-
-		loadContainer: function(callback) {
-
-		},
-
-		unloadContainer: function() {
 
 		}
 
