@@ -37,3 +37,12 @@
 	background-size: cover;
 	-ms-behavior: url('../bower_components/background-size-polyfill/backgroundsize.min.htc');
 }
+
+.jq-gs-cache {
+	position: absolute;
+	left: -1px;
+	top: -1px;
+	width: 1px;
+	height: 1px;
+	@include opacity(0);
+}
