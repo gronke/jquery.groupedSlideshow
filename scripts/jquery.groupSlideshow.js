@@ -73,10 +73,6 @@
 		addGroup: function(name) {
 			var $group = $(document.createElement('div')).addClass(this.options.classNames.group).attr('group', name);
 			this.$el.append($group);
-			
-			if(this.$el.children().length === 1) {
-				this.setActiveGroup($group);
-			}
 
 			return $group;
 		},
@@ -140,7 +136,7 @@
 
 				// replace with 1x1px spacer
 				$cache.attr('src', self.options.spacerImage);
-				$img.css('background-image', 'url(' + self.options.spacerImage + ')');
+				$img.css('background-image', '');
 				$img.attr('loaded', false);
 
 			});
@@ -157,11 +153,6 @@
 				$container.css({
 					opacity: 1
 				});
-
-				// activate first container only if this is the first added group
-				if(this.getGroups().length === 1) {
-					this.setActiveContainer($group, $container);
-				}
 			}
 		},
 
@@ -215,25 +206,26 @@
 			var onLoadContainer = function() { // when grouo switch was successfull
 
 				$oldGroup.removeClass(self.options.classNames.group + '-active');
-				self.getContainer($oldGroup).removeClass(self.options.classNames.container).trigger('purge');
+				self.getContainer($oldGroup).removeClass(self.options.classNames.container + '-active').trigger('purge');
 				
 				$group.addClass(self.options.classNames.group + '-active');
 
-				$newActiveContainer.addClass(self.options.classNames.container + '-active');
+				//$newActiveContainer.addClass(self.options.classNames.container + '-active');
+
+				self.setActiveContainer($group, $newActiveContainer);
+
+				// unbind event
+				//$newActiveContainer.unbind('loaded', onLoadContainer);
 
 				self.resetInterval();
 
 			};
 
-			$newActiveContainer.find('img').bind('load', function() {
-				var $this = $(this);
-				if($this.attr('src')===$this.attr('jq-gs-src')) {
-					onLoadContainer();
-				}
-			});
-
 			// start caching
-			this.setActiveContainer($group, $newActiveContainer);
+			$newActiveContainer.bind('loaded', function() {
+				onLoadContainer();
+			});
+			$newActiveContainer.trigger('cache');
 
 			if($newActiveContainer.attr('loaded')==='true') {
 				// image is already loaded, bypass the loaded event
@@ -247,9 +239,7 @@
 				$oldContainer = this.getActiveContainer($group);
 
 			// bind events
-			$oldContainer.unbind('loaded');
-			$newContainer.bind('loaded', function() {
-
+			var onLoadContainer = function() {
 				// set $newContainer active
 				$newContainer.addClass(self.options.classNames.container + '-active');
 
@@ -258,7 +248,6 @@
 
 				var done = function() {
 					// purge old container when done
-					$oldContainer.trigger('purge');
 					$oldContainer.removeClass(self.options.classNames.container + '-active');
 				}
 
@@ -292,11 +281,17 @@
 				}
 
 				self.resetInterval();
-
-			});
+			}
+			$oldContainer.unbind('loaded');
+			$newContainer.bind('loaded', onLoadContainer);
 
 			// start loading
 			$newContainer.trigger('cache');
+
+			if($newContainer.attr('loaded')==='true') {
+				// bypass load event
+				onLoadContainer();
+			}
 			
 		},
 
